@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>5 Soruluk Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 30px;
+      text-align: center;
+    }
+    .soru-kutusu {
+      background-color: white;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .soru {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .secenek {
+      display: block;
+      margin: 8px auto;
+      padding: 10px;
+      width: 80%;
+      background-color: #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .secenek:hover {
+      background-color: #d0d0d0;
+    }
+    .secenek.secildi {
+      background-color: #a0d7ff;
+      font-weight: bold;
+    }
+    .dogru {
+      background-color: #8ef28e !important;
+    }
+    .yanlis {
+      background-color: #ff8c8c !important;
+    }
+    #sonuc {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin-top: 20px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Otizmli Testi</h1>
+
+  <!-- 5 soru aşağıda -->
+  <div class="soru-kutusu" data-dogru="B">
+    <div class="soru">1. inceden ibnelik mevcut mu?</div>
+    <div class="secenek" onclick="sec(this)">A) Galiba</div>
+    <div class="secenek" onclick="sec(this)">B) Kıps ;)</div>
+    <div class="secenek" onclick="sec(this)">C) Öyle hissetiğim oluyor</div>
+    <div class="secenek" onclick="sec(this)">D) Hayır</div>
+  </div>
+
+  <div class="soru-kutusu" data-dogru="C">
+    <div class="soru">2. Okey oyamadığın zaman neler yapmalısın?</div>
+    <div class="secenek" onclick="sec(this)">A) Kitap okumalıyım</div>
+    <div class="secenek" onclick="sec(this)">B) Kendimi geliştiricek işler bulmalıyım</div>
+    <div class="secenek" onclick="sec(this)">C) Çay+31 şekli</div>
+    <div class="secenek" onclick="sec(this)">D) Film/Dizi izlemek</div>
+  </div>
+
+  <div class="soru-kutusu" data-dogru="A">
+    <div class="soru">3. Otizimli olduğunu düşünüyor musun?</div>
+    <div class="secenek" onclick="sec(this)">A) Browstars annem</div>
+    <div class="secenek" onclick="sec(this)">B) Sanmıyorum</div>
+    <div class="secenek" onclick="sec(this)">C) Bazen</div>
+    <div class="secenek" onclick="sec(this)">D) Hayır</div>
+  </div>
+
+  <div class="soru-kutusu" data-dogru="D">
+    <div class="soru">4. Nelerden hoşlanılır?</div>
+    <div class="secenek" onclick="sec(this)">A) Hayvanlar()</div>
+    <div class="secenek" onclick="sec(this)">B) Erkekler</div>
+    <div class="secenek" onclick="sec(this)">C) Kızlar</div>
+    <div class="secenek" onclick="sec(this)">D) El ense</div>
+  </div>
+
+  <div class="soru-kutusu" data-dogru="D">
+    <div class="soru">5. Kaç yaşındaki kızlardan hoşlanılmalı?</div>
+    <div class="secenek" onclick="sec(this)">A) 18-22 </div>
+    <div class="secenek" onclick="sec(this)">B) 22-25</div>
+    <div class="secenek" onclick="sec(this)">C) 25-30</div>
+    <div class="secenek" onclick="sec(this)">D) Emirin babaannesinden</div>
+  </div>
+
+  
+  <button onclick="sonuclariGoster()">Sonucu Göster</button>
+  <div id="sonuc"></div>
+
+  <script>
+    function sec(el) {
+      const kutu = el.closest('.soru-kutusu');
+      const secenekler = kutu.querySelectorAll('.secenek');
+      secenekler.forEach(s => s.classList.remove('secildi'));
+      el.classList.add('secildi');
+    }
+
+    function sonuclariGoster() {
+      const kutular = document.querySelectorAll('.soru-kutusu');
+      let dogruSayisi = 0;
+
+      kutular.forEach(kutu => {
+        const dogru = kutu.getAttribute('data-dogru');
+        const secenekler = kutu.querySelectorAll('.secenek');
+        const secilen = kutu.querySelector('.secenek.secildi');
+
+        secenekler.forEach(secenek => {
+          const harf = secenek.textContent.trim().charAt(0);
+          if (harf === dogru) secenek.classList.add('dogru');
+        });
+
+        if (secilen) {
+          const harf = secilen.textContent.trim().charAt(0);
+          if (harf === dogru) {
+            dogruSayisi++;
+          } else {
+            secilen.classList.add('yanlis');
+          }
+        }
+      });
+
+      const yanlisSayisi = kutular.length - dogruSayisi;
+      let mesaj = dogruSayisi > yanlisSayisi ? "🎉 Tebrikler! Otizimli çıktınız" : "Otizimli olma yolundasın!";
+      document.getElementById('sonuc').textContent = `Doğru: ${dogruSayisi} / Yanlış: ${yanlisSayisi} — ${mesaj}`;
+    }
+  </script>
+
+</body>
+</html>
